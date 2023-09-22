@@ -16,8 +16,9 @@ while True:
         for val in rawValues:
             if raw == val:
                 key = abs(raw)
+        print(key)
         with open("button.txt", mode="w", encoding="utf-8") as file:
-            file.write(str(raw))
+            file.write(str(key))
 
     else:
         print(raw)
