@@ -5,10 +5,14 @@ rawValues = [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14]
 s = serial.Serial(port="/dev/cu.usbserial-1130", baudrate=9600)
 
 key = 0
+raw = 0
 
 while True:
     # wait for serial input
-    raw = int(s.readline().decode("utf-8"))
+    try:
+        raw = int(s.readline().decode("utf-8"))
+    except:
+        pass
 
     # really stupid python
     # sets key to correct raw value
@@ -17,10 +21,10 @@ while True:
             if raw == val:
                 key = abs(raw)
         print(key)
-        with open("button.txt", mode="w", encoding="utf-8") as file:
+        with open("applescripts/button.txt", mode="w", encoding="utf-8") as file:
             file.write(str(key))
 
     else:
         print(raw)
-        with open("volume.txt", mode="w", encoding="utf-8") as file:
+        with open("applescripts/volume.txt", mode="w", encoding="utf-8") as file:
             file.write(str(raw))
