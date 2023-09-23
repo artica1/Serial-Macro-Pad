@@ -6,6 +6,7 @@ s = serial.Serial(port="/dev/cu.usbserial-1130", baudrate=9600)
 
 key = 0
 raw = 0
+lastKey = 0
 
 while True:
     # wait for serial input
@@ -17,10 +18,11 @@ while True:
     # really stupid python
     # sets key to correct raw value
     if raw < 0:
-        for val in rawValues:
-            if raw == val:
-                key = abs(raw)
+        key = abs(raw)
+        if key == lastKey:
+            key = -key
         print(key)
+        lastKey = key
         with open("applescripts/button.txt", mode="w", encoding="utf-8") as file:
             file.write(str(key))
 
