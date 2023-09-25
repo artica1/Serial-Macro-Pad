@@ -1,0 +1,54 @@
+set keyCodeListPos to {0, 0, 122, 120, 99, 0, 0, 0, 89, 91, 92, 82, 81, 65}
+set keyCodeListNeg to {65, 81, 82, 92, 91, 89, 88, 87, 86, 85, 84, 83, 0, 0}
+set prevButton to (read POSIX file "/Users/guesthome/Documents/Arduino-Serial-Macro-Pad/applescripts/button.txt")
+set keyCode to ""
+set readButton to (read POSIX file "/Users/guesthome/Documents/Arduino-Serial-Macro-Pad/applescripts/button.txt")
+
+repeat
+	try
+		set readButton to (read POSIX file "/Users/guesthome/Documents/Arduino-Serial-Macro-Pad/applescripts/button.txt")
+	end try
+	if readButton is not prevButton then
+		set prevButton to readButton
+		if readButton is in {"2", "-2"} then
+			tell application "System Events"
+				set frontmostProcess to first process where it is frontmost
+				set appName to name of frontmostProcess
+			end tell
+			if "Discord" is in appName then
+				tell application "System Events" to keystroke "m" using {command down, shift down}
+			else
+				tell application "Discord" to activate
+				tell application "System Events"
+					keystroke "m" using {command down, shift down}
+					--keystroke "d" using {command down, shift down}
+					keystroke tab using {command down}
+				end tell
+			end if
+		else if readButton is in {"1", "-1"} then
+		else if readButton is in {"6", "-6"} then
+			tell application "System Events" to key down 99
+			tell application "System Events" to key down 45
+			tell application "System Events" to key up 99
+			tell application "System Events" to key up 45
+		else if readButton is in {"7", "-7"} then
+			tell application "System Events" to key down 99
+			tell application "System Events" to key down 11
+			tell application "System Events" to key up 99
+			tell application "System Events" to key up 11
+		else if readButton is in {"8", "-8"} then
+			tell application "System Events" to key down 99
+			tell application "System Events" to key down 5
+			tell application "System Events" to key up 99
+			tell application "System Events" to key up 5
+		else
+			if readButton > 0 then
+				set keyCode to item readButton of keyCodeListPos
+			else
+				set keyCode to item readButton of keyCodeListNeg
+			end if
+			tell application "System Events" to key code keyCode
+		end if
+	end if
+	delay (0.1)
+end repeat
